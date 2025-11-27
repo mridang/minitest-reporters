@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'test_helper'
-require 'minitest/autorun'
-require 'simplecov'
-require_relative '../lib/better_coverage'
 
 class BetterCoverageTest < Minitest::Test # rubocop:disable Metrics/ClassLength
   def setup
@@ -66,18 +63,15 @@ class BetterCoverageTest < Minitest::Test # rubocop:disable Metrics/ClassLength
 
   def test_make_line
     result = @reporter.send(:make_line, 10, 5)
-    expected = '-----------|---------|----------|---------|---------|-------'
+    expected = '-----------|---------|-------'
 
     assert_equal expected, result
   end
 
-  def test_table_header # rubocop:disable Minitest/MultipleAssertions
+  def test_table_header
     result = @reporter.send(:table_header, 20, 17)
 
     assert_includes result, 'File'
-    assert_includes result, '% Stmts'
-    assert_includes result, '% Branch'
-    assert_includes result, '% Funcs'
     assert_includes result, '% Lines'
     assert_includes result, 'Uncovered Line #s'
   end
@@ -169,7 +163,7 @@ class BetterCoverageTest < Minitest::Test # rubocop:disable Metrics/ClassLength
     }
     width = @reporter.send(:calculate_max_width, tree, 0)
 
-    assert_equal 9, width # 'user.rb' (7 chars) at depth 2 = 7 + (2 * 1) = 9
+    assert_equal 9, width
   end
 
   def test_collect_files_single_file

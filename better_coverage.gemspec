@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/better_coverage/version'
+require_relative 'lib/minitest_plus/version'
 
 Gem::Specification.new do |gemspec|
   gemspec.name = 'better_coverage'
