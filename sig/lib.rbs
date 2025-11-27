@@ -1,0 +1,41 @@
+# frozen_string_literal: true
+
+module MinitestPlus
+  VERSION: String
+
+  class BetterCoverage < Minitest::Reporters::BaseReporter
+    NAME_COL: Integer
+    PCT_COLS: Integer
+    MISSING_COL: Integer
+    TAB_SIZE: Integer
+    DELIM: String
+
+    @max_cols: Integer
+    @skip_empty: bool
+    @skip_full: bool
+
+    def initialize: (?Hash[Symbol, untyped] options) -> void
+    def report: () -> void
+
+    private
+
+    def print_coverage_table: (SimpleCov::Result result) -> void
+    def build_tree: (Array[SimpleCov::SourceFile] files) -> Hash[String, untyped]
+    def calculate_max_width: (Hash[String, untyped] tree, Integer depth) -> Integer
+    def print_tree: (Hash[String, untyped] tree, Integer name_width, Integer missing_width, Integer depth) -> void
+    def dir_row: (String name, Hash[String, untyped] node, Integer name_width, Integer missing_width, Integer depth) -> String
+    def collect_files: (Hash[String, untyped] node) -> Array[SimpleCov::SourceFile]
+    def file_row: (SimpleCov::SourceFile file, String name, Integer name_width, Integer missing_width, Integer depth) -> String
+    def summary_line: (Float total_pct, Integer name_width, Integer missing_width) -> String
+    def relative_path: (String filename) -> String
+    def uncovered_lines: (SimpleCov::SourceFile file) -> String
+    def fill: (untyped text, Integer width, ?right: bool, ?tabs: Integer) -> String
+    def make_line: (Integer name_width, Integer missing_width) -> String
+    def table_header: (Integer name_width, Integer missing_width) -> String
+    def colorize_by_coverage: (String text, (Integer | Float) pct) -> String
+    def colorize_uncovered: (String text, (Integer | Float) pct) -> String
+    def green: (String text) -> String
+    def yellow: (String text) -> String
+    def red: (String text) -> String
+  end
+end

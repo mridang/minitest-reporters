@@ -1,0 +1,29 @@
+name: Run Tests (Minitest)
+
+on: push
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: ./
+
+jobs:
+  app-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Install Dependencies
+        run: bundle install
+
+      - name: Run Tests
+        run: bundle exec rake test

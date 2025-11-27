@@ -1,0 +1,49 @@
+{
+  "branches": [
+    "master"
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "bundle config unset deployment"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "sed -i 's/[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+[-a-zA-Z0-9\\.]*/${nextRelease.version}/' lib/better_coverage/version.rb"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "bundle install --path vendor/bundle && gem build *.gemspec"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "successComment": false,
+        "failComment": false,
+        "assets": [
+          {
+            "path": "*.gem"
+          }
+        ]
+      }
+    ],
+    "semantic-release-rubygem",
+    [
+      "@semantic-release/git",
+      {
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+        "assets": [
+          "lib/better_coverage/version.rb"
+        ]
+      }
+    ]
+  ]
+}

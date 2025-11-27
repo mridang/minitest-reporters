@@ -1,0 +1,9 @@
+# sig/minitest/reporters.rbs
+module Minitest
+  module Reporters
+    class BaseReporter
+      def initialize: (Hash[Symbol, untyped]) -> void
+      def report: () -> void
+    end
+  end
+end

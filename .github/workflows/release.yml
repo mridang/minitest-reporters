@@ -1,0 +1,43 @@
+name: Release to Github
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: ./
+
+jobs:
+  publish-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Install Dependencies
+        run: bundle install
+
+      - name: Install Semantic Release
+        run: |
+          npm install --global semantic-release
+          npm install --global @semantic-release/git
+          npm install --global @semantic-release/exec
+          npm install --global semantic-release-rubygem
+
+      - name: Run semantic-release
+        uses: mridang/action-semantic-release@v1.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}

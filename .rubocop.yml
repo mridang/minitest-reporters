@@ -1,0 +1,18 @@
+plugins:
+  - rubocop-minitest
+  - rubocop-rake
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+  NewCops: enable
+  TargetRubyVersion: 3.0
+
+Layout/LineLength:
+  Max: 130
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Metrics/BlockLength:
+  Max: 100

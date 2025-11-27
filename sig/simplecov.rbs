@@ -1,0 +1,23 @@
+module SimpleCov
+  def self.result: () -> Result?
+  def self.root: () -> String
+
+  class Result
+    def files: () -> Array[SourceFile]
+    def covered_percent: () -> Float
+  end
+
+  class SourceFile
+    def filename: () -> String
+    def covered_percent: () -> Float
+    def lines: () -> Array[Line]
+    def covered_lines: () -> Array[Line]
+
+    class Line
+      def line_number: () -> Integer
+      def covered?: () -> bool
+      def never?: () -> bool
+      def skipped?: () -> bool
+    end
+  end
+end
