@@ -31,26 +31,21 @@ module MinitestPlus
 
     private
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def print_coverage_table(result)
       files = result.files.sort_by(&:filename)
       return if files.empty?
 
       tree = build_tree(files)
       name_width = [NAME_COL, calculate_max_width(tree, 0)].max
-      missing_width = [MISSING_COL, files.map { |f| uncovered_lines(f).length }.max].max
+      missing_width = MISSING_COL
 
       if @max_cols.positive?
-        pct_cols = DELIM.length + (4 * (PCT_COLS + DELIM.length)) + 2
+        # Only 3 columns now: File | % Lines | Uncovered
+        pct_cols = DELIM.length + PCT_COLS + DELIM.length
         max_remaining = @max_cols - (pct_cols + MISSING_COL)
 
-        if name_width > max_remaining
-          name_width = max_remaining
-          missing_width = MISSING_COL
-        elsif name_width < max_remaining
-          max_remaining = @max_cols - (name_width + pct_cols)
-          missing_width = max_remaining if missing_width > max_remaining
-        end
+        name_width = max_remaining if name_width > max_remaining
       end
 
       puts
@@ -65,7 +60,7 @@ module MinitestPlus
       puts summary_row
       puts make_line(name_width, missing_width)
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def build_tree(files) # rubocop:disable Metrics/MethodLength
       tree = {}
@@ -117,30 +112,26 @@ module MinitestPlus
       end
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
     def dir_row(name, node, name_width, missing_width, depth)
       files = collect_files(node)
       return '' if files.empty?
       return '' if @skip_empty && files.all? { |f| f.lines.empty? }
 
-      total_covered = files.sum { |f| f.covered_lines.size }
-      total_lines = files.sum { |f| f.lines.reject(&:skipped?).size }
-      pct = total_lines.positive? ? (total_covered.to_f / total_lines * 100).round(2) : 0.0
+      # Calculate average coverage across all files
+      pct = files.sum(&:covered_percent) / files.size
 
       return '' if @skip_full && pct == 100.0 # rubocop:disable Lint/FloatComparison
 
       elements = [
         colorize_by_coverage(fill(name, name_width, tabs: depth), pct),
-        colorize_by_coverage(fill(pct, PCT_COLS, right: true), pct),
-        colorize_by_coverage(fill('100', PCT_COLS + 1, right: true), 100),
-        colorize_by_coverage(fill('100', PCT_COLS, right: true), 100),
-        colorize_by_coverage(fill(pct, PCT_COLS, right: true), pct),
+        colorize_by_coverage(fill(pct.round(2), PCT_COLS, right: true), pct),
         fill('', missing_width)
       ]
 
       "#{elements.join(DELIM)} "
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
     def collect_files(node)
       files = []
@@ -154,7 +145,7 @@ module MinitestPlus
       files
     end
 
-    def file_row(file, name, name_width, missing_width, depth) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def file_row(file, name, name_width, missing_width, depth)
       return '' if @skip_empty && file.lines.empty?
 
       pct_lines = file.covered_percent.round(2)
@@ -162,9 +153,6 @@ module MinitestPlus
 
       elements = [
         colorize_by_coverage(fill(name, name_width, tabs: depth), pct_lines),
-        colorize_by_coverage(fill(pct_lines, PCT_COLS, right: true), pct_lines),
-        colorize_by_coverage(fill('100', PCT_COLS + 1, right: true), 100),
-        colorize_by_coverage(fill('100', PCT_COLS, right: true), 100),
         colorize_by_coverage(fill(pct_lines, PCT_COLS, right: true), pct_lines),
         colorize_uncovered(fill(uncovered_lines(file), missing_width), pct_lines)
       ]
@@ -177,9 +165,6 @@ module MinitestPlus
 
       elements = [
         colorize_by_coverage(fill('All files', name_width), total_pct),
-        colorize_by_coverage(fill(total_pct_rounded, PCT_COLS, right: true), total_pct),
-        colorize_by_coverage(fill('100', PCT_COLS + 1, right: true), 100),
-        colorize_by_coverage(fill('100', PCT_COLS, right: true), 100),
         colorize_by_coverage(fill(total_pct_rounded, PCT_COLS, right: true), total_pct),
         fill('', missing_width)
       ]
@@ -238,9 +223,6 @@ module MinitestPlus
       elements = [
         '-' * name_width,
         '-' * PCT_COLS,
-        '-' * (PCT_COLS + 1),
-        '-' * PCT_COLS,
-        '-' * PCT_COLS,
         '-' * missing_width
       ]
       "#{elements.join(DELIM.gsub(' ', '-'))}-"
@@ -249,9 +231,6 @@ module MinitestPlus
     def table_header(name_width, missing_width)
       elements = [
         fill('File', name_width),
-        fill('% Stmts', PCT_COLS, right: true),
-        fill('% Branch', PCT_COLS + 1, right: true),
-        fill('% Funcs', PCT_COLS, right: true),
         fill('% Lines', PCT_COLS, right: true),
         fill('Uncovered Line #s', missing_width)
       ]
