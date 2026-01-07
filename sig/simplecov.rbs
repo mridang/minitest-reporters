@@ -1,4 +1,8 @@
 module SimpleCov
+  # Whether SimpleCov is currently collecting coverage
+  def self.running: () -> bool?
+  def self.running=: (bool) -> bool
+
   def self.result: () -> Result?
   def self.root: () -> String
 
