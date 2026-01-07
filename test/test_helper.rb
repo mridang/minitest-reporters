@@ -10,6 +10,7 @@ require 'minitest/reporters'
 require_relative '../lib/better_coverage'
 
 Minitest::Reporters.use! [
-  Minitest::Reporters::SpecReporter.new, # Shows test results
-  MinitestPlus::BetterCoverage.new # Shows coverage
+  MinitestPlus::BetterCoverage.new,
+  Minitest::Reporters::SpecReporter.new(color: true),
+  Minitest::Reporters::JUnitReporter.new('build/reports/', true, single_file: true)
 ]
