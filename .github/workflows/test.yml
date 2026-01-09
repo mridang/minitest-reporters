@@ -30,7 +30,7 @@ jobs:
 
       - name: Generate coverage report
         if: always()
-        uses: mridang/action-test-reporter@feat/add-test-result-support
+        uses: mridang/action-test-reporter@v3
         with:
           results-path: 'build/reports/**/*.xml'
           coverage-path: 'build/coverage/coverage.xml'
