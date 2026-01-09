@@ -26,6 +26,10 @@ module MinitestPlus
       result = SimpleCov.result
       return unless result
 
+      # Calling SimpleCov.result stops its at_exit hook from running; flip it back
+      # on so the configured formatters still write their reports.
+      SimpleCov.running = true if SimpleCov.respond_to?(:running=) && !SimpleCov.running
+
       print_coverage_table(result)
     end
 
