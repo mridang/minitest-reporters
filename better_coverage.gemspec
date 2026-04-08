@@ -15,7 +15,7 @@ Gem::Specification.new do |gemspec|
   gemspec.required_ruby_version = '>= 3.0'
   gemspec.metadata = { 'rubygems_mfa_required' => 'true' }
 
-  gemspec.add_dependency 'minitest-reporters', '~> 1.5'
+  gemspec.add_dependency 'minitest-reporters', '~> 1.8'
   gemspec.add_dependency 'simplecov', '~> 0.22'
 
   gemspec.files = Dir.chdir(File.expand_path(__dir__)) do
