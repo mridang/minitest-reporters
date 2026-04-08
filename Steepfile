@@ -5,6 +5,8 @@ target :app do
   signature 'sig'
 
   library 'json'
+  library 'pathname'
+  library 'time'
 
   Steep.logger.level = Logger::FATAL
 end

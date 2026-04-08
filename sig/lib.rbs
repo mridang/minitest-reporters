@@ -38,4 +38,33 @@ module MinitestPlus
     def yellow: (String text) -> String
     def red: (String text) -> String
   end
+
+  class BetterJUnit < Minitest::Reporters::BaseReporter
+    type options = Hash[Symbol, untyped]
+    type suite_stats = Hash[Symbol, untyped]
+
+    DEFAULT_PATH: String
+
+    @path: String
+    @base_path: String
+    @include_timestamp: bool
+
+    def initialize: (?options opts) -> void
+    def report: () -> void
+
+    private
+
+    def build_xml: () -> String
+    def get_source_location: (Minitest::_TestResult result) -> [ String, Integer ]
+    def get_relative_path: (Minitest::_TestResult result) -> Pathname
+    def parse_xml_for: (Builder::XmlMarkup xml, Minitest::Reporters::Suite suite, Array[Minitest::_TestResult] tests) -> void
+    def testsuite_attributes: (Minitest::Reporters::Suite suite, Pathname file_path, suite_stats stats) -> Hash[Symbol, untyped]
+    def testcase_attributes: (Minitest::_TestResult test, Minitest::Reporters::Suite suite, Pathname file_path) -> Hash[Symbol, untyped]
+    def xml_attachment_for: (Minitest::_TestResult test) -> String
+    def xml_message_for: (Minitest::_TestResult test) -> String?
+    def trunc: (String text) -> String
+    def message_for: (Minitest::_TestResult test, Minitest::_Failure failure) -> String
+    def location: (Minitest::_Failure failure) -> String
+    def analyze_suite: (Array[Minitest::_TestResult] tests) -> suite_stats
+  end
 end

@@ -1,9 +1,73 @@
-# sig/minitest/reporters.rbs
+# sig/minitest.rbs
+
+# Structural type for a Minitest::Result-like object — what reporters
+# actually consume from a finished test (real Minitest::Result or any
+# Runnable that quacks the same way).
 module Minitest
+  interface _TestResult
+    def name: () -> String
+    def assertions: () -> Integer
+    def time: () -> Float
+    def passed?: () -> bool
+    def skipped?: () -> bool
+    def error?: () -> bool
+    def failure: () -> _Failure?
+    def source_location: () -> [ String, Integer ]
+    def respond_to?: (String | Symbol) -> bool
+    def metadata: () -> Hash[Symbol, untyped]
+    def class: () -> Class
+  end
+
+  # Structural type for the failure object hanging off a non-passing
+  # test result (Minitest::Assertion / Minitest::UnexpectedError / Skip).
+  interface _Failure
+    def error: () -> Exception
+    def message: () -> String
+    def backtrace: () -> Array[String]
+  end
+
   module Reporters
-    class BaseReporter
-      def initialize: (Hash[Symbol, untyped]) -> void
-      def report: () -> void
+    class Suite
+      attr_reader name: String
+      def initialize: (String name) -> void
+      def ==: (Suite other) -> bool
+      def eql?: (Suite other) -> bool
+      def hash: () -> Integer
+      def to_s: () -> String
     end
+
+    class BaseReporter
+      attr_accessor tests: Array[Minitest::_TestResult]
+
+      def initialize: (Hash[Symbol, untyped] options) -> void
+      def start: () -> void
+      def report: () -> void
+
+      def test_class: (Minitest::_TestResult? result) -> Suite?
+      def result: (Minitest::_TestResult test) -> Symbol
+    end
+  end
+end
+
+# Builder::XmlMarkup interface — explicit declarations for every tag and
+# helper that BetterJUnit calls. Builder uses method_missing for arbitrary
+# elements, so we declare each tag we emit by name.
+module Builder
+  class XmlMarkup
+    type attrs = Hash[Symbol, untyped]
+
+    def initialize: (?indent: Integer, ?margin: Integer) -> void
+    def instruct!: (?Symbol) -> void
+    def target!: () -> String
+    def text!: (String) -> String
+    def tag!: (String, String) -> String
+    def <<: (String) -> self
+
+    def testsuites: () { () -> void } -> String
+    def testsuite: (attrs) { () -> void } -> String
+    def testcase: (attrs) { () -> void } -> String
+    def failure: (attrs) { () -> void } -> String
+    def error: (attrs) { () -> void } -> String
+    def skipped: (attrs) -> String
   end
 end
