@@ -3,7 +3,7 @@ name: Run Tests (Minitest)
 on: push
 
 permissions:
-  contents: write
+  contents: read
 
 defaults:
   run:
