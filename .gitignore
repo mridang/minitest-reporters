@@ -40,7 +40,5 @@ build/
 
 .env
 
-devbox.json
-devbox.lock
 .devbox
 Gemfile.lock

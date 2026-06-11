@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.10.7/.schema/devbox.schema.json",
+  "packages": [
+    "ruby@3.0",
+    "libyaml@latest"
+  ],
+  "env": {
+    "BUNDLE_PATH": "./vendor/bundle"
+  },
+  "shell": {
+    "scripts": {
+      "format": [
+        "bundle exec rubocop --autocorrect-all"
+      ],
+      "test": [
+        "bundle exec rake test"
+      ],
+      "check": [
+        "bundle exec rake steep"
+      ],
+      "replit": [
+        "docker build --tag ruby-repl --file Dockerfile .",
+        "docker run --rm --interactive --tty ruby-repl"
+      ],
+      "docgen": [
+        "bundle exec rake rdoc"
+      ]
+    }
+  }
+}
