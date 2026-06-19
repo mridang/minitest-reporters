@@ -24,7 +24,7 @@ jobs:
         uses: mridang/action-runner-common@v1
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -43,7 +43,7 @@ jobs:
           npm install --global semantic-release-rubygem
 
       - name: Run semantic-release
-        uses: mridang/action-semantic-release@v2.1.0
+        uses: mridang/action-semantic-release@v2.2.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
