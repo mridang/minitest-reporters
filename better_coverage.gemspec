@@ -16,7 +16,7 @@ Gem::Specification.new do |gemspec|
   gemspec.metadata = { 'rubygems_mfa_required' => 'true' }
 
   gemspec.add_dependency 'minitest-reporters', '~> 1.8'
-  gemspec.add_dependency 'simplecov', '~> 0.22'
+  gemspec.add_dependency 'simplecov', '>= 0.22', '< 2.0'
 
   gemspec.files = Dir.chdir(File.expand_path(__dir__)) do
     `find lib README.md LICENSE.txt -type f -print0 2>/dev/null`.split("\x0").reject do |f|
