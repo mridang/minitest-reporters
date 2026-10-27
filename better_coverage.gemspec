@@ -12,11 +12,11 @@ Gem::Specification.new do |gemspec|
   gemspec.summary = 'Jest-style coverage reporter for Minitest'
   gemspec.description = 'Minitest reporter displaying SimpleCov coverage in Jest/Istanbul format with directory tree'
   gemspec.license = 'Apache-2.0'
-  gemspec.required_ruby_version = '>= 3.0'
+  gemspec.required_ruby_version = '>= 3.3'
   gemspec.metadata = { 'rubygems_mfa_required' => 'true' }
 
   gemspec.add_dependency 'minitest-reporters', '~> 1.8'
-  gemspec.add_dependency 'simplecov', '~> 0.22'
+  gemspec.add_dependency 'simplecov', '~> 1.3'
 
   gemspec.files = Dir.chdir(File.expand_path(__dir__)) do
     `find lib README.md LICENSE.txt -type f -print0 2>/dev/null`.split("\x0").reject do |f|
