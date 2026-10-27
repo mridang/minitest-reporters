@@ -6,7 +6,7 @@ gemspec
 
 group :development do
   gem 'rake'
-  gem 'rubocop', require: false
+  gem 'rubocop', '~> 1.92.1', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-rake', require: false
   gem 'steep', require: false

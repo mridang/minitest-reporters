@@ -51,7 +51,7 @@ module MinitestPlus
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable-next Metrics/MethodLength
     def parse_xml_for(xml, suite, tests)
       stats = analyze_suite(tests)
       file_path = get_relative_path(tests.first)
@@ -67,7 +67,6 @@ module MinitestPlus
         end
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def testsuite_attributes(suite, file_path, stats)
       attrs = {
@@ -93,7 +92,7 @@ module MinitestPlus
       xml.target!
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
     def xml_message_for(test)
       failure = test.failure
       return nil unless failure
@@ -114,7 +113,6 @@ module MinitestPlus
 
       xml.target!
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def trunc(text)
       text.sub(/\n.*/m, '...')

@@ -5,7 +5,7 @@ require 'tmpdir'
 require 'rexml/document'
 require_relative '../lib/better_junit'
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class BetterJUnitTest < Minitest::Test
   FakeFailure = Struct.new(:error, :message, :backtrace)
 
@@ -77,7 +77,7 @@ class BetterJUnitTest < Minitest::Test
     assert_equal 'test/reports/junit.xml', MinitestPlus::BetterJUnit::DEFAULT_PATH
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def test_analyze_suite_counts_all_outcomes # rubocop:disable Minitest/MultipleAssertions
     tests = [passed_test(assertions: 3, time: 0.10), failed_test, errored_test, skipped_test]
 
@@ -91,7 +91,6 @@ class BetterJUnitTest < Minitest::Test
     assert_equal 1, result[:skip_count]
     assert_in_delta 0.151, result[:time], 0.001
   end
-  # rubocop:enable Metrics/AbcSize
 
   def test_analyze_suite_includes_timestamp_when_enabled
     @reporter.instance_variable_set(:@include_timestamp, true)
@@ -120,7 +119,7 @@ class BetterJUnitTest < Minitest::Test
     assert_equal 'lib/bar.rb', @reporter.send(:get_relative_path, test).to_s
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
   def test_build_xml_emits_required_testsuite_attributes # rubocop:disable Minitest/MultipleAssertions
     @reporter.tests = [passed_test, failed_test, errored_test, skipped_test]
 
@@ -138,9 +137,8 @@ class BetterJUnitTest < Minitest::Test
     refute_nil suite.attributes['time']
     assert_nil suite.attributes['timestamp']
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def test_build_xml_emits_required_testcase_attributes # rubocop:disable Minitest/MultipleAssertions
     @reporter.tests = [passed_test(name: 'test_alpha', lineno: 42, assertions: 7, time: 0.5)]
 
@@ -154,7 +152,6 @@ class BetterJUnitTest < Minitest::Test
     assert_equal '0.5', testcase.attributes['time']
     assert_equal 'lib/example.rb', testcase.attributes['file']
   end
-  # rubocop:enable Metrics/AbcSize
 
   def test_build_xml_includes_timestamp_attribute_when_enabled
     reporter = MinitestPlus::BetterJUnit.new(include_timestamp: true)
@@ -179,7 +176,7 @@ class BetterJUnitTest < Minitest::Test
     assert_equal 2, doc.root.elements.to_a('testsuite').size
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def test_build_xml_emits_failure_element_for_failed_test # rubocop:disable Minitest/MultipleAssertions
     @reporter.tests = [failed_test(message: 'boom!')]
 
@@ -192,9 +189,8 @@ class BetterJUnitTest < Minitest::Test
     assert_includes failure.text, 'Failure:'
     assert_includes failure.text, 'test_fails'
   end
-  # rubocop:enable Metrics/AbcSize
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def test_build_xml_emits_error_element_for_errored_test # rubocop:disable Minitest/MultipleAssertions
     @reporter.tests = [errored_test(message: 'crashed')]
 
@@ -207,7 +203,6 @@ class BetterJUnitTest < Minitest::Test
     assert_includes error.text, 'Error:'
     assert_includes error.text, 'test_errors'
   end
-  # rubocop:enable Metrics/AbcSize
 
   def test_build_xml_emits_skipped_element_for_skipped_test
     @reporter.tests = [skipped_test]
@@ -252,7 +247,7 @@ class BetterJUnitTest < Minitest::Test
     assert_nil testcase.elements['skipped']
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable-next Metrics/MethodLength, Metrics/AbcSize
   def test_report_writes_well_formed_file_to_configured_path
     Dir.mktmpdir do |dir|
       path = File.join(dir, 'nested', 'junit.xml')
@@ -269,7 +264,6 @@ class BetterJUnitTest < Minitest::Test
       assert_equal 1, doc.root.elements.to_a('testsuite').size
     end
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def test_report_creates_default_directory_when_missing
     Dir.mktmpdir do |dir|
@@ -285,4 +279,3 @@ class BetterJUnitTest < Minitest::Test
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

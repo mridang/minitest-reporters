@@ -35,7 +35,7 @@ module MinitestPlus
 
     private
 
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
     def print_coverage_table(result)
       files = result.files.sort_by(&:filename)
       return if files.empty?
@@ -64,7 +64,6 @@ module MinitestPlus
       puts summary_row
       puts make_line(name_width, missing_width)
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def build_tree(files) # rubocop:disable Metrics/MethodLength
       tree = {}
@@ -116,7 +115,7 @@ module MinitestPlus
       end
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
     def dir_row(name, node, name_width, missing_width, depth)
       files = collect_files(node)
       return '' if files.empty?
@@ -135,7 +134,6 @@ module MinitestPlus
 
       "#{elements.join(DELIM)} "
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
     def collect_files(node)
       files = []
@@ -180,7 +178,7 @@ module MinitestPlus
       filename.sub("#{SimpleCov.root}/", '')
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+    # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     def uncovered_lines(file)
       covered_lines = file.lines.reject(&:skipped?).map do |line|
         [line.line_number, line.covered? || line.never?]
@@ -202,7 +200,6 @@ module MinitestPlus
         range.length == 1 ? range[0].to_s : "#{range[0]}-#{range[1]}"
       end.join(',')
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
     def fill(text, width, right: false, tabs: 0) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       text = text.to_s
