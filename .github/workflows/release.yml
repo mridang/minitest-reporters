@@ -43,7 +43,7 @@ jobs:
           npm install --global semantic-release-rubygem
 
       - name: Run semantic-release
-        uses: mridang/action-semantic-release@v2.1.0
+        uses: mridang/action-semantic-release@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
