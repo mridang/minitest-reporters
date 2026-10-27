@@ -142,6 +142,7 @@ module MinitestPlus
     end
 
     def analyze_suite(tests)
+      # @type var stats: suite_stats
       stats = Hash.new(0)
       stats[:time] = 0.0
       tests.each do |test|
