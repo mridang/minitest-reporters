@@ -1,7 +1,7 @@
 # .github/workflows/lint.yml
 name: Lint Code (Steep)
 
-on: push
+on: pull_request
 
 permissions:
   contents: read
